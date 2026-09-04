@@ -316,6 +316,39 @@
             border-radius: 2vmin;
         }
 
+        #credit-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 3vmin;
+            cursor: default;
+        }
+
+        #credit-content img {
+            width: 30vmin;
+            max-width: 220px;
+            height: auto;
+            border-radius: 50%;
+            border: 0.6vmin solid #fff;
+            box-shadow: 0 0 3vmin rgba(0, 0, 0, 0.5);
+        }
+
+        #credit-content .credit-name {
+            color: #fff;
+            font-family: sans-serif;
+            font-weight: 900;
+            font-size: 4.5vmin;
+            letter-spacing: 0.3vmin;
+        }
+
+        #credit-content .credit-label {
+            color: #ccc;
+            font-family: sans-serif;
+            font-size: 2.2vmin;
+            letter-spacing: 0.2vmin;
+            margin-top: -2vmin;
+        }
+
         #clear-msg {
             position: fixed;
             top: 50%;
@@ -413,7 +446,12 @@
 
 <div id="modal-overlay">
     <div id="modal-content">
-        <img src="manual.png" alt="Manual">
+        <img src="manual.png" alt="Manual" id="modal-manual-img">
+        <div id="credit-content">
+            <img src="shinako_icon.jpg" alt="SHINAKO">
+            <div class="credit-label">CREATED BY</div>
+            <div class="credit-name">SHINAKO</div>
+        </div>
     </div>
 </div>
 
@@ -836,12 +874,16 @@ document.getElementById("btn-tweet").onclick = () => {
 document.getElementById("btn-play").onclick = startSequence;
 
 document.getElementById("btn-about").onclick = () => {
+    document.getElementById("modal-manual-img").style.display = "none";
+    document.getElementById("credit-content").style.display = "flex";
     document.getElementById("modal-overlay").style.display = "flex";
     isPaused = true;
 };
 
 // ゲーム画面ボタン
 document.getElementById("btn-howto").onclick = () => {
+    document.getElementById("modal-manual-img").style.display = "block";
+    document.getElementById("credit-content").style.display = "none";
     document.getElementById("modal-overlay").style.display = "flex";
     isPaused = true;
 };
@@ -867,6 +909,12 @@ document.onkeydown = (e) => {
         move(-1, 0);
     } else if (e.key === "ArrowRight") {
         move(1, 0);
+    } else if (e.key === " " || e.code === "Space" || e.key === "Spacebar") {
+        e.preventDefault();
+        // タイトル画面やモーダル表示中はリセットしない
+        if (document.getElementById("title-screen").style.display === "none" && !isPaused) {
+            resetGame();
+        }
     }
 };
 
